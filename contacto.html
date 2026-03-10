@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torres del Sol — Contacto</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="logo-titulo">
+      <img src="images/Logo.png" alt="Logo Torres del Sol" class="logo">
+      <h1 class="site-title">Licores Artesanales Torres del Sol</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-items">
+        <li class="dropdown">
+          <a href="index.html" class="nav-link">Inicio ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="dispositivos.html">Dispositivos</a></li>
+            <li><a href="circuito.html">Circuito</a></li>
+            <li><a href="codificacion.html">Codificación</a></li>
+            <li><a href="analisis.html">Análisis de Datos</a></li>
+          </ul>
+        </li>
+        <li><a href="dataR.html" class="nav-link">Lectura de datos</a></li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <h2>Contacto</h2>
+    <p>Licores Artesanales Torres del Sol · Escríbenos</p>
+  </section>
+
+  <!-- ─── FORMULARIO ─── -->
+  <section class="content-white">
+    <p class="section-title">Envíanos un Mensaje</p>
+    <p class="section-label">Equipo de desarrollo del sistema IoT</p>
+
+    <form class="contact-form fade-up" id="contactForm">
+
+      <div class="form-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" placeholder="correo@ejemplo.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="asunto">Asunto</label>
+        <input type="text" id="asunto" name="asunto" placeholder="Tema de tu mensaje">
+      </div>
+
+      <div class="form-group">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Escribe tu consulta aquí..." required></textarea>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn-gold">Enviar mensaje</button>
+      </div>
+
+      <p id="formMsg" class="hidden text-center"
+         style="margin-top:20px; font-size:13px; letter-spacing:1px; color:var(--wood-dark);">
+      </p>
+
+    </form>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- Info de contacto -->
+    <div class="cards-grid fade-up" style="max-width:700px; margin: 0 auto;">
+      <div class="card">
+        <div class="card-icon">📍</div>
+        <div class="card-title">Ubicación</div>
+        <p class="card-text">Bodega principal Torres del Sol<br>Colombia</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📧</div>
+        <div class="card-title">Correo</div>
+        <p class="card-text">contacto@torresdelsolbodega.com</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <p class="footer-brand">Torres del Sol</p>
+    <p>© 2025 Licores Artesanales Torres del Sol · Sistema IoT de Monitoreo</p>
+  </footer>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      msg.textContent = '✦ Mensaje enviado correctamente. Nos pondremos en contacto pronto.';
+      msg.classList.remove('hidden');
+      this.reset();
+      setTimeout(() => msg.classList.add('hidden'), 5000);
+    });
+  </script>
+
+</body>
+</html>

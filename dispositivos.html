@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torres del Sol — Dispositivos</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="logo-titulo">
+      <img src="images/Logo.png" alt="Logo Torres del Sol" class="logo">
+      <h1 class="site-title">Licores Artesanales Torres del Sol</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-items">
+        <li class="dropdown">
+          <a href="index.html" class="nav-link">Inicio ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="dispositivos.html">Dispositivos</a></li>
+            <li><a href="circuito.html">Circuito</a></li>
+            <li><a href="codificacion.html">Codificación</a></li>
+            <li><a href="analisis.html">Análisis de Datos</a></li>
+          </ul>
+        </li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <h2>Dispositivos del Sistema</h2>
+    <p>Componentes electrónicos · Hardware de monitoreo</p>
+  </section>
+
+  <!-- ─── CONTENIDO PRINCIPAL ─── -->
+  <section class="content-white">
+    <p class="section-title">Hardware Utilizado</p>
+    <p class="section-label">Componentes del sistema de adquisición de datos</p>
+
+    <!-- Dispositivo 1 -->
+    <div class="info-block fade-up" style="max-width:1000px; margin: 0 auto 60px;">
+      <div class="info-block-text">
+        <h3>Microcontrolador Arduino Nano</h3>
+        <p>
+          El Arduino Nano es el cerebro del sistema. Este microprocesador de bajo costo y 
+          tamaño compacto se encarga de leer los datos de los sensores de temperatura y humedad, 
+          procesarlos y almacenarlos en la tarjeta MicroSD. Su arquitectura basada en el ATmega328P 
+          ofrece un equilibrio ideal entre rendimiento y consumo energético para aplicaciones de 
+          monitoreo en tiempo real.
+        </p>
+        <br>
+        <p><strong>Especificaciones clave:</strong></p>
+        <p>Voltaje: 5v / 3.3v, Atmega328P, arquitectura: AVR de 8 Bits, Frecuencia: 16 MHz,
+          Memoria flash: 32 KB, Pines digitales: 14, Entradas analógicas: 8, Comunicación: I2C, Tamaño: 45mm x 18mm </p>
+      </div>
+      <div class="info-block-img">
+        <img src="images/Arduino_nano.jpg" alt="Arduino Nano microcontrolador">
+      </div>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- Dispositivo 2 -->
+    <div class="info-block reverse fade-up" style="max-width:1000px; margin: 40px auto 60px;">
+      <div class="info-block-text">
+        <h3>Sensor DHT22</h3>
+        <p>
+          El DHT22 es un sensor digital de temperatura y humedad relativa de alta
+          precisión. Utiliza un protocolo de comunicación de un solo cable, lo que
+          simplifica el cableado. Es ideal para entornos de bodega donde se requiere
+          monitoreo estable en rangos de temperatura entre -40°C y 80°C y humedad
+          del 0% al 100% RH.
+        </p>
+        <br>
+        <p><strong>Especificaciones clave:</strong></p>
+        <p>Temp: ±0.5°C · Humedad: ±2–5% RH · Protocolo: Single-wire · Voltaje: 3.3–5V</p>
+      </div>
+      <div class="info-block-img">
+        <img src="images/dht22.png" alt="Sensor DHT22">
+      </div>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- Dispositivo 3 -->
+    <div class="info-block fade-up" style="max-width:1000px; margin: 40px auto 0;">
+      <div class="info-block-text">
+        <h3>Módulo MicroSD</h3>
+        <p>
+          Para el almacenamiento local de datos, se usa un módulo lector de tarjeta
+          MicroSD conectado al Arduino Nano. Los datos de temperatura y humedad
+          se escriben en formato CSV con marca de tiempo, permitiendo exportación
+          directa para análisis posterior en esta plataforma web.
+        </p>
+        <br>
+        <p><strong>Especificaciones clave:</strong></p>
+        <p>Interfaz: SPI · Capacidad: hasta 32GB · Formato: FAT32 · Voltaje: 3.3V</p>
+      </div>
+      <div class="info-block-img">
+        <img src="images/lector_sd.png" alt="Módulo MicroSD">
+      </div>
+    </div>
+
+        <!-- Dispositivo 4 -->
+    <div class="info-block fade-up" style="max-width:1000px; margin: 40px auto 0;">
+      <div class="info-block-text">
+        <h3>Memoria SD </h3>
+        <p>
+          Para el almacenamiento local de datos. Los datos de temperatura y humedad
+          se escriben en formato CSV con marca de tiempo, permitiendo exportación
+          directa para análisis posterior en esta plataforma web.
+        </p>
+        <br>
+        <p><strong>Especificaciones clave:</strong></p>
+        <p>Interfaz: SPI · Capacidad: hasta 32GB · Formato: FAT32 · Voltaje: 3.3V</p>
+      </div>
+      <div class="info-block-img">
+        <img src="images/microsd.png" alt="Memoria SD">
+      </div>
+    </div>
+
+        <!-- Dispositivo 5 -->
+    <div class="info-block fade-up" style="max-width:1000px; margin: 40px auto 0;">
+      <div class="info-block-text">
+        <h3>Módulo RTC DS3231</h3>
+        <p>
+          Un módulo RTC (Real Time Clock) DS3231 es un reloj de tiempo real preciso que 
+          mantiene la fecha y la hora incluso cuando el Arduino no está alimentado gracias 
+          a su batería interna. Se comunica con el Arduino por I²C para obtener el tiempo actual 
+          (hora, minutos, segundos, fecha) y así poder marcar cada medición con una marca 
+          temporal real en vez de depender del temporizador interno del microcontrolador, 
+          que se reinicia con cada reset o apagado del sistema.
+        </p>
+        <br>
+        <p><strong>Especificaciones clave:</strong></p>
+        <p>Interfaz: SPI · Capacidad: hasta 32GB · Formato: FAT32 · Voltaje: 3.3V</p>
+      </div>
+      <div class="info-block-img">
+        <img src="images/RTCDS3234.jpg" alt="Módulo RTC DS3231">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <p class="footer-brand">Torres del Sol</p>
+    <p>© 2025 Licores Artesanales Torres del Sol · Sistema IoT de Monitoreo</p>
+  </footer>
+
+</body>
+</html>

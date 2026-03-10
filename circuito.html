@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torres del Sol — Circuito</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="logo-titulo">
+      <img src="images/Logo.png" alt="Logo Torres del Sol" class="logo">
+      <h1 class="site-title">Licores Artesanales Torres del Sol</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-items">
+        <li class="dropdown">
+          <a href="index.html" class="nav-link">Inicio ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="dispositivos.html">Dispositivos</a></li>
+            <li><a href="circuito.html">Circuito</a></li>
+            <li><a href="codificacion.html">Codificación</a></li>
+            <li><a href="analisis.html">Análisis de Datos</a></li>
+          </ul>
+        </li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <h2>Diseño del Circuito</h2>
+    <p>Esquema eléctrico · Conexiones · Alimentación</p>
+  </section>
+
+  <!-- ─── DESCRIPCIÓN GENERAL ─── -->
+  <section class="content-white">
+    <p class="section-title">Esquema del Sistema</p>
+    <p class="section-label">Diseño eléctrico del circuito de sensado</p>
+
+    <div class="information1 mb-40 fade-up">
+      <p>
+        El circuito fue diseñado para operar de manera autónoma dentro de la bodega,
+        registrando temperatura y humedad en intervalos regulares. La alimentación
+        se realiza mediante batería LiPo de 3.7V con módulo de carga solar opcional
+        para instalaciones sin toma eléctrica cercana.
+      </p>
+    </div>
+
+    <!-- Imagen del esquema -->
+    <div class="imagen-container fade-up">
+      <img src="images/circuito_foto.jpeg"
+           alt="Esquema eléctrico del circuito"
+           class="imagen-barrica">
+      <p style="font-size:11px; letter-spacing:2px; text-transform:uppercase;
+                color:var(--gold-dim); margin-top:12px; text-align:center;">
+        Figura 1 — Diagrama esquemático completo
+      </p>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+<!-- Bloque: Conexiones -->
+<div class="info-block fade-up" style="max-width:1000px; margin: 40px auto 60px;">
+  <div class="info-block-text">
+    <h3>Tabla de Conexiones</h3>
+    <p>
+      Las conexiones entre el Arduino Nano y los módulos se realizan con resistencia
+      pull-up de 10kΩ en la línea de datos del DHT22. El módulo MicroSD se conecta por
+      bus SPI y el RTC DS3231 mediante protocolo I2C.
+    </p>
+  </div>
+
+  <!-- Sección 1: DHT22 -->
+  <div class="connection-section" style="
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 40px;
+    padding: 24px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  ">
+    <img
+      src="images/arduino-nano-dht22.jpg"
+      alt="Conexión Arduino Nano con DHT22"
+      style="width:280px; height:210px; object-fit:cover; border-radius:8px; flex-shrink:0;"
+    >
+    <div>
+      <h4 style="margin:0 0 10px; font-size:1.1rem; color:#222;">Arduino Nano + DHT22</h4>
+      <p style="margin:0 0 8px;">
+        Sensor de temperatura y humedad. Se conecta al Arduino Nano en la línea de datos D3.
+      </p>
+      <p><strong>VCC</strong> → 5V</p>
+      <p><strong>GND</strong> → GND</p>
+      <p><strong>DATA</strong> → D3</p>
+    </div>
+  </div>
+
+  <!-- Sección 2: Módulo MicroSD -->
+  <div class="connection-section" style="
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 24px;
+    padding: 24px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  ">
+    <img
+      src="images/arduino-nano-micro-sd.jpg"
+      alt="Conexión Arduino Nano con Módulo Memoria SD"
+      style="width:280px; height:210px; object-fit:cover; border-radius:8px; flex-shrink:0;"
+    >
+    <div>
+      <h4 style="margin:0 0 10px; font-size:1.1rem; color:#222;">Arduino Nano + Módulo MicroSD</h4>
+      <p style="margin:0 0 8px;">
+        Módulo de almacenamiento conectado mediante bus SPI. Permite guardar
+        los registros de temperatura y humedad en una tarjeta microSD.
+      </p>
+      <p><strong>CS</strong> → D4</p>
+      <p><strong>SCK</strong> → D13</p>
+      <p><strong>MISO</strong> → D12</p>
+      <p><strong>MOSI</strong> → D11</p>
+      <p><strong>5V o VCC</strong> → 5V</p>
+      <p><strong>GND</strong> → GND</p>
+    </div>
+  </div>
+
+  <!-- Sección 3: RTC DS3231 -->
+  <div class="connection-section" style="
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 24px;
+    padding: 24px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  ">
+    <img
+      src="images/arduino_ds3231.png"
+      alt="Conexión Arduino Nano con RTC DS3231"
+      style="width:280px; height:210px; object-fit:cover; border-radius:8px; flex-shrink:0;"
+    >
+    <div>
+      <h4 style="margin:0 0 10px; font-size:1.1rem; color:#222;">Arduino Nano + RTC DS3231</h4>
+      <p style="margin:0 0 8px;">
+        Módulo de reloj en tiempo real con comunicación I2C. Proporciona
+        la marca de tiempo exacta para cada registro almacenado.
+      </p>
+      <p><strong>VCC</strong> → 5V</p>
+      <p><strong>GND</strong> → GND</p>
+      <p><strong>SDA</strong> → A4</p>
+      <p><strong>SCL</strong> → A5</p>
+    </div>
+  </div>
+
+</div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- Bloque: PCB / protoboard -->
+    <div class="info-block reverse fade-up" style="max-width:1000px; margin: 40px auto 0;">
+      <div class="info-block-text">
+        <h3>Implementación Física</h3>
+        <p>
+          El prototipo fue implementado en protoboard para validación inicial.
+          La versión final se encapsula en una caja ABS IP65 para protección
+          contra humedad, condición fundamental para su operación dentro de la bodega
+          donde la humedad relativa supera regularmente el 70%.
+        </p>
+        <br>
+        <p>>
+          En la imagen se muestra el circuito montado en su caja protectora, con
+          conexiones organizadas y acceso a los puertos para mantenimiento y
+          actualización del firmware.
+        </p>
+      </div>
+      <div class="info-block-img">
+        <img src="images/circuito_foto.jpeg" alt="Circuito en caja protectora">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <p class="footer-brand">Torres del Sol</p>
+    <p>© 2025 Licores Artesanales Torres del Sol · Sistema IoT de Monitoreo</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torres del Sol — Inicio</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="logo-titulo">
+      <img src="images/Logo.png" alt="Logo Torres del Sol" class="logo">
+      <h1 class="site-title">Licores Artesanales Torres del Sol</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-items">
+        <li class="dropdown">
+          <a href="index.html" class="nav-link">Inicio ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="dispositivos.html">Dispositivos</a></li>
+            <li><a href="circuito.html">Circuito</a></li>
+            <li><a href="codificacion.html">Codificación</a></li>
+            <li><a href="analisis.html">Análisis de Datos</a></li>
+          </ul>
+        </li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <h2>Monitoreo de Barricas de Maduración</h2>
+    <p>Licores Artesanales Torres del Sol · Sistema de Sensores IoT</p>
+  </section>
+
+  <!-- ─── IMAGEN PRINCIPAL ─── -->
+  <section class="content-white">
+    <div class="imagen-container fade-up">
+      <img src="images/brett_foto_acenol177.jpg"
+           alt="Barricas de maduración Torres del Sol"
+           class="imagen-barrica">
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <div class="information1 fade-up">
+      <p>
+        En esta sección se muestra la información de los sensores instalados en las barricas de
+        maduración, con el fin de monitorear las condiciones de almacenamiento y maduración de
+        los licores artesanales. Los datos incluyen temperatura y humedad relativa, parámetros
+        críticos para garantizar la calidad y consistencia del producto final.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── TARJETAS DE SECCIONES ─── -->
+  <section class="content-cream">
+    <p class="section-title">Explora el Proyecto</p>
+    <p class="section-label">Sistema de recolección y análisis de datos</p>
+
+    <div class="cards-grid">
+
+      <div class="card fade-up">
+        <div class="card-icon">🔌</div>
+        <div class="card-title">Dispositivos</div>
+        <p class="card-text">
+          Descripción de los componentes electrónicos utilizados en el sistema de monitoreo:
+          microcontrolador, sensores DHT22 y módulos de comunicación.
+        </p>
+        <br>
+        <a href="dispositivos.html" class="btn-gold">Ver dispositivos</a>
+      </div>
+
+      <div class="card fade-up">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">Diseño del Circuito</div>
+        <p class="card-text">
+          Esquema eléctrico y diseño físico del circuito de sensado, conexiones y
+          alimentación del sistema de adquisición de datos.
+        </p>
+        <br>
+        <a href="circuito.html" class="btn-gold">Ver circuito</a>
+      </div>
+
+      <div class="card fade-up">
+        <div class="card-icon">💻</div>
+        <div class="card-title">Codificación</div>
+        <p class="card-text">
+          Código fuente del firmware del microcontrolador y scripts de captura de datos
+          para la recolección continua de temperatura y humedad.
+        </p>
+        <br>
+        <a href="codificacion.html" class="btn-gold">Ver código</a>
+      </div>
+
+      <div class="card fade-up">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Análisis de Datos</div>
+        <p class="card-text">
+          Carga tu archivo CSV con los registros del sensor para visualizar gráficas
+          de temperatura y humedad en el tiempo, con alertas por umbrales críticos.
+        </p>
+        <br>
+        <a href="analisis.html" class="btn-gold">Analizar datos</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <p class="footer-brand">Torres del Sol</p>
+    <p>© 2025 Licores Artesanales Torres del Sol · Sistema IoT de Monitoreo</p>
+  </footer>
+
+</body>
+</html>

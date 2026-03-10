@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torres del Sol — Codificación</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="logo-titulo">
+      <img src="images/Logo.png" alt="Logo Torres del Sol" class="logo">
+      <h1 class="site-title">Licores Artesanales Torres del Sol</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-items">
+        <li class="dropdown">
+          <a href="index.html" class="nav-link">Inicio ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="dispositivos.html">Dispositivos</a></li>
+            <li><a href="circuito.html">Circuito</a></li>
+            <li><a href="codificacion.html">Codificación</a></li>
+            <li><a href="analisis.html">Análisis de Datos</a></li>
+          </ul>
+        </li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <h2>Codificación del Sistema</h2>
+    <p>Firmware · Scripts · Lógica de captura de datos</p>
+  </section>
+
+  <!-- ─── CONTENIDO ─── -->
+  <section class="content-white">
+    <p class="section-title">Código del Firmware</p>
+    <p class="section-label">ESP32 · Arduino IDE · Librerías DHT y SD</p>
+
+    <div class="information1 mb-40 fade-up">
+      <p>
+        El firmware fue desarrollado en Arduino IDE para el Arduino Nano. Se utilizan las librerías
+        <strong>DHT sensor library</strong> (Adafruit) para la lectura del sensor,
+        <strong>SD.h</strong> para el almacenamiento en MicroSD y
+        <strong>RTClib.h</strong> para sincronización de tiempo real.
+        Los datos se guardan en formato CSV con encabezado <code>timestamp,temperatura,humedad</code>.
+      </p>
+    </div>
+
+<!-- Código principal -->
+<div class="code-block fade-up">
+  <span class="code-label">firmware.ino — Lectura y almacenamiento</span>
+  <pre>//Arduino Nano  MicroSD Adaptor
+//GND           GND
+//5V            5V
+//Pin 11        MOSI
+//Pin 12        MISO
+//Pin 13        SCK
+//Pin 4         CS
+
+//Arduino Nano  DS3231 RTC
+//GND           GND
+//5V            VCC
+//A4            SDA
+//A5            SCL
+
+//Arduino Nano  Jumper reinicio CSV
+//D6            Un extremo del jumper
+//GND           Otro extremo del jumper
+
+#include &lt;DHT.h&gt;
+#include &lt;SD.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;RTClib.h&gt;
+
+#define DHTPIN 3
+#define DHTTYPE DHT22
+#define SD_CHIP_SELECT 4
+#define BUTTON_PIN 6
+#define INTERVALO_LECTURA 10000UL  // 10 segundos
+
+DHT dht(DHTPIN, DHTTYPE);
+RTC_DS3231 rtc;
+File archivoDatos;
+
+unsigned long tiempoUltimaLectura = 0;
+
+// ---------- Crear archivo CSV ----------
+void crearArchivo() {
+  if (SD.exists("datos.csv")) {
+    SD.remove("datos.csv");
+    Serial.println(F("Archivo anterior eliminado"));
+  }
+  archivoDatos = SD.open("datos.csv", FILE_WRITE);
+  if (archivoDatos) {
+    archivoDatos.println(F("Timestamp,Temperatura (C),Humedad (%)"));
+    archivoDatos.close();
+    Serial.println(F("Nuevo archivo CSV creado"));
+  } else {
+    Serial.println(F("Error al crear el archivo CSV"));
+  }
+}
+
+// ---------- Registrar lectura ----------
+void registrarDatos() {
+  float temperatura = dht.readTemperature();
+  float humedad = dht.readHumidity();
+
+  if (isnan(temperatura) || isnan(humedad)) {
+    Serial.println(F("Error al leer el sensor DHT22"));
+    return;
+  }
+
+  DateTime ahora = rtc.now();
+  char timestamp[20];
+  sprintf(timestamp, "%04d-%02d-%02d %02d:%02d:%02d",
+          ahora.year(), ahora.month(), ahora.day(),
+          ahora.hour(), ahora.minute(), ahora.second());
+
+  char bufTemp[8];
+  char bufHum[8];
+  dtostrf(temperatura, 5, 2, bufTemp);
+  dtostrf(humedad, 5, 2, bufHum);
+
+  Serial.print(F("["));
+  Serial.print(timestamp);
+  Serial.print(F("] T: "));
+  Serial.print(temperatura);
+  Serial.print(F(" C, H: "));
+  Serial.print(humedad);
+  Serial.println(F(" %"));
+
+  archivoDatos = SD.open("datos.csv", FILE_WRITE);
+  if (archivoDatos) {
+    archivoDatos.print(timestamp);
+    archivoDatos.print(F(","));
+    archivoDatos.print(bufTemp);
+    archivoDatos.print(F(","));
+    archivoDatos.println(bufHum);
+    archivoDatos.close();
+    Serial.println(F("Datos guardados en SD"));
+  } else {
+    Serial.println(F("Error al abrir datos.csv"));
+  }
+}
+
+// ---------- Setup ----------
+void setup() {
+  Serial.begin(9600);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  dht.begin();
+  delay(2000);
+
+  if (!rtc.begin()) {
+    Serial.println(F("ERROR: RTC DS3231 no encontrado"));
+    while (1);
+  }
+  if (rtc.lostPower()) {
+    Serial.println(F("RTC sin hora, ajustando..."));
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
+
+  if (!SD.begin(SD_CHIP_SELECT)) {
+    Serial.println(F("ERROR: Tarjeta SD no encontrada"));
+    while (1);
+  }
+
+  if (!SD.exists("datos.csv")) {
+    crearArchivo();
+  } else {
+    Serial.println(F("Archivo CSV existente, continuando..."));
+  }
+
+  Serial.println(F("Sistema listo. Tomando lecturas cada 10s"));
+  tiempoUltimaLectura = millis();
+}
+
+// ---------- Loop ----------
+void loop() {
+
+  if (digitalRead(BUTTON_PIN) == LOW) {
+    Serial.println(F("Jumper detectado: reiniciando CSV..."));
+    crearArchivo();
+    tiempoUltimaLectura = millis();
+    while (digitalRead(BUTTON_PIN) == LOW) {
+      delay(100);
+    }
+    Serial.println(F("Jumper retirado, continuando..."));
+  }
+
+  if (millis() - tiempoUltimaLectura &gt;= INTERVALO_LECTURA) {
+    tiempoUltimaLectura = millis();
+    registrarDatos();
+  }
+}</pre>
+</div>
+
+    <div class="divider"><span>✦</span></div>
+
+<!-- Imagen del entorno de desarrollo -->
+<div class="info-block fade-up" style="max-width:1000px; margin: 40px auto 60px;">
+  <div class="info-block-text">
+    <h3>Entorno de Desarrollo</h3>
+    <p>
+      Arduino IDE 2.x con soporte para Arduino Nano instalado vía Board Manager.
+      Las librerías se instalan desde el Library Manager integrado.
+      El puerto serie a 9600 baud permite monitorear las lecturas
+      en tiempo real durante la fase de pruebas.
+    </p>
+    <br>
+    <p><strong>Librerías requeridas:</strong></p>
+    <p>
+      DHT sensor library (Adafruit) ·
+      Adafruit Unified Sensor ·
+      RTClib (Adafruit) ·
+      SD (incluida en Arduino core)
+    </p>
+  </div>
+  <div class="info-block-img">
+    <img src="images/arduino_ide.png" alt="Arduino IDE con el código">
+  </div>
+</div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- Formato CSV -->
+    <p class="section-title" style="margin-bottom:8px;">Formato del Archivo CSV</p>
+    <p class="section-label">Estructura esperada para el análisis de datos</p>
+
+    <div class="code-block fade-up">
+      <span class="code-label">datos.csv — Ejemplo de salida</span>
+      <pre>timestamp,temperatura,humedad
+2025-03-01 08:00:00,14.30,72.10
+2025-03-01 08:01:00,14.35,71.95
+2025-03-01 08:02:00,14.28,72.40
+2025-03-01 08:03:00,14.22,72.88
+2025-03-01 08:04:00,14.19,73.05</pre>
+    </div>
+
+    <div class="information1 fade-up" style="margin-top:20px;">
+      <p>
+        El archivo CSV debe contener exactamente estos tres encabezados para que
+        la página de análisis procese correctamente los datos y genere las gráficas.
+        El formato de la marca de tiempo puede ser cualquier formato reconocible
+        por JavaScript (<code>YYYY-MM-DD HH:MM:SS</code> es el recomendado).
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <p class="footer-brand">Torres del Sol</p>
+    <p>© 2025 Licores Artesanales Torres del Sol · Sistema IoT de Monitoreo</p>
+  </footer>
+
+</body>
+</html>

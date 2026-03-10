@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torres del Sol — Análisis de Datos</title>
+  <link rel="stylesheet" href="front.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- ─── TOPBAR ─── -->
+  <header class="topbar">
+    <div class="logo-titulo">
+      <img src="images/Logo.png" alt="Logo Torres del Sol" class="logo">
+      <h1 class="site-title">Licores Artesanales Torres del Sol</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-items">
+        <li class="dropdown">
+          <a href="index.html" class="nav-link">Inicio ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="dispositivos.html">Dispositivos</a></li>
+            <li><a href="circuito.html">Circuito</a></li>
+            <li><a href="codificacion.html">Codificación</a></li>
+            <li><a href="analisis.html">Análisis de Datos</a></li>
+          </ul>
+        </li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <h2>Análisis de Datos del Sensor</h2>
+    <p>Temperatura y humedad · Visualización y alertas</p>
+  </section>
+
+  <!-- ─── MAIN CONTENT ─── -->
+  <section class="content-white">
+
+    <!-- UPLOAD ZONE -->
+    <div id="uploadArea">
+      <p class="section-title">Cargar Dataset CSV</p>
+      <p class="section-label">Archivo generado por el circuito de sensado</p>
+
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="csvInput" accept=".csv">
+        <div class="upload-icon">🍷</div>
+        <h3>Arrastra tu archivo CSV aquí</h3>
+        <p>
+          Formato requerido: <strong>timestamp, temperatura, humedad</strong><br>
+          Generado automáticamente por el firmware del Arduino Nano
+        </p>
+        <label class="btn-gold" for="csvInput">Seleccionar archivo</label>
+      </div>
+
+      <p id="uploadError" class="hidden"
+         style="text-align:center; color:#c0392b; font-size:13px; letter-spacing:1px; margin-top:12px;">
+      </p>
+    </div>
+
+    <!-- DASHBOARD (oculto hasta cargar CSV) -->
+    <div id="dashboard" class="hidden">
+
+      <!-- Nombre del archivo cargado -->
+      <div class="text-center mb-40">
+        <p style="font-size:11px; letter-spacing:3px; text-transform:uppercase;
+                  color:var(--gold-dim);">Archivo cargado: <span id="fileName" style="color:var(--wood-dark);"></span></p>
+        <button class="btn-gold" id="btnNuevo" style="margin-top:14px;">
+          Cargar nuevo archivo
+        </button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-strip fade-up">
+        <div class="kpi-card">
+          <span class="kpi-val" id="kpiRegistros">—</span>
+          <span class="kpi-lbl">Registros totales</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-val" id="kpiTempProm">—</span>
+          <span class="kpi-lbl">Temp. promedio (°C)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-val wine" id="kpiHumProm">—</span>
+          <span class="kpi-lbl">Humedad promedio (%)</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-val alert" id="kpiAlertas">—</span>
+          <span class="kpi-lbl">Alertas generadas</span>
+        </div>
+      </div>
+
+      <!-- Umbrales configurables -->
+      <p class="section-title" style="margin-bottom:8px;">Umbrales de Alerta</p>
+      <p class="section-label">Ajusta los valores críticos para la bodega</p>
+
+      <div class="threshold-bar fade-up">
+        <div class="threshold-item">
+          <label>Temp. máx. (°C)</label>
+          <input type="number" id="thTempMax" value="18" step="0.5">
+        </div>
+        <div class="threshold-item">
+          <label>Temp. mín. (°C)</label>
+          <input type="number" id="thTempMin" value="10" step="0.5">
+        </div>
+        <div class="threshold-item">
+          <label>Humedad máx. (%)</label>
+          <input type="number" id="thHumMax" value="80" step="1">
+        </div>
+        <div class="threshold-item">
+          <label>Humedad mín. (%)</label>
+          <input type="number" id="thHumMin" value="55" step="1">
+        </div>
+        <div class="threshold-item" style="justify-content:flex-end;">
+          <label>&nbsp;</label>
+          <button class="btn-gold" id="btnRecalcular">Recalcular</button>
+        </div>
+      </div>
+
+      <!-- GRÁFICAS -->
+      <div class="charts-section fade-up">
+
+        <!-- Fila 1: Temperatura | Humedad -->
+        <div class="charts-row">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Temperatura en el Tiempo</div>
+                <div class="chart-subtitle">Registros del sensor DHT22</div>
+              </div>
+              <span class="chart-tag">°C</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="chartTemp"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Humedad Relativa en el Tiempo</div>
+                <div class="chart-subtitle">Registros del sensor DHT22</div>
+              </div>
+              <span class="chart-tag">% RH</span>
+            </div>
+            <div class="chart-wrapper">
+              <canvas id="chartHum"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 2: Doble eje (full width) -->
+        <div class="charts-row">
+          <div class="chart-card full">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Temperatura y Humedad — Doble Eje</div>
+                <div class="chart-subtitle">Correlación entre variables en el tiempo</div>
+              </div>
+              <span class="chart-tag">DUAL AXIS</span>
+            </div>
+            <div class="chart-wrapper" style="height: 300px;">
+              <canvas id="chartDual"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABLA DE ALERTAS -->
+      <div class="divider"><span>✦</span></div>
+
+      <p class="section-title" style="margin-bottom:8px;">Registro de Alertas</p>
+      <p class="section-label">Lecturas fuera de los umbrales establecidos</p>
+
+      <div class="chart-card fade-up" style="max-width:1000px; margin: 0 auto;">
+        <div style="overflow-x:auto;">
+          <table class="alerts-table" id="alertsTable">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Temperatura (°C)</th>
+                <th>Humedad (%)</th>
+                <th>Tipo de alerta</th>
+              </tr>
+            </thead>
+            <tbody id="alertsBody">
+              <tr>
+                <td colspan="4" style="text-align:center; color:var(--gold-dim); padding:24px;">
+                  Sin alertas registradas en este periodo.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /#dashboard -->
+
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <p class="footer-brand">Torres del Sol</p>
+    <p>© 2025 Licores Artesanales Torres del Sol · Sistema IoT de Monitoreo</p>
+  </footer>
+
+  <script src="analisis.js"></script>
+</body>
+</html>
